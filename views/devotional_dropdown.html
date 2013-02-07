@@ -1,0 +1,10 @@
+{% extends "dropdown.html" %}
+{% block content %}
+    <form action="/biblesearch/devotional" method="get" id="form-devotional" class="modal-form">
+        <div class="input-prepend input-append">
+            <span class="add-on">Date</span>
+            <input class="input-small" id="devotional" name="date" type="text" value="{{date}}" data-provide="typeahead"/>
+            <button type="submit" class="btn"><i class="icon-ok"></i></button>
+        </div>
+    </form>
+{% endblock %}

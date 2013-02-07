@@ -1,0 +1,19 @@
+{% for i in output %}
+    {% set href = "/biblesearch/lookup?verse_refs=" + i.verseref.replace(' ', '+') %}
+    <div class="row-fluid">
+    {% if i.highlight %}
+        <a class="verseref target-verse" href="{{href}}">
+            {{i.verseref}}
+        </a>
+        {% if i.verseref %} : {% endif %}
+        <span class="verse-text target-text">{{i.versetext}}</span>
+    {% else %}
+        <a class="verseref" href="{{href}}">{{i.verseref}}</a>
+        {% if i.verseref %} : {% endif %}
+        <span class="verse-text regular-text">{{i.versetext}}</span>
+    {% endif %}
+    {% if not i.verseref %}
+        <hr/>
+    {% endif %}
+    </div>
+{% endfor %}

@@ -1,0 +1,19 @@
+{% extends "dropdown.html" %}
+{% block content %}
+    <form action="/biblesearch/range" id="form-range" class="modal-form">
+        <fieldset>
+            <div class="input-prepend input-append">
+                <span class="add-on">Lower</span>
+                <input class="input-small" name="min" id="min-range" value="{{min_range}}" type="text" data-provide="typeahead"/>
+                <span class="add-on"><i class="icon-book"></i></span>
+            </div>
+
+            <div class="input-prepend input-append">
+                <span class="add-on">Upper</span>
+                <input class="input-small" name="max" id="max-range" value="{{max_range}}" type="text" data-provide="typeahead"/>
+                <span class="add-on"><i class="icon-book"></i></span>
+            </div>
+            <button type="submit" class="btn"><i class="icon-ok"></i></button>
+        </fieldset>
+    </form>
+{% endblock %}

@@ -1,0 +1,29 @@
+<div class="accordion" id="verse-accordion">
+{% for i in output %}
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle verseref target-verse" data-toggle="collapse" data-parent="verse-accordion" href="#collapse{{loop.index}}">
+                    {{i.verseref}}
+            </a>
+        </div>
+        {% if i.highlight %}
+        <div id="collapse{{loop.index}}" class="accordion-body collapse in">
+        {% else %}
+        <div id="collapse{{loop.index}}" class="accordion-body collapse">
+        {% endif %}
+            <div class="accordion-inner">
+                <span class="verse-text target-text">{{i.versetext}}</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row-fluid"> -->
+        <!-- {% if i.highlight %}                                              -->
+        <!--     <a class="verseref" id="target-verse" href="#">               -->
+        <!--         {{i.verseref}}                                            -->
+        <!--     </a> : <span id="target-text">{{i.versetext}}</span>          -->
+        <!-- {% else %}                                                        -->
+        <!-- <a class="verseref" href="#">{{i.verseref}}</a> : {{i.versetext}} -->
+        <!-- {% endif %}                                                       -->
+    <!-- </div> -->
+{% endfor %}
+</div>

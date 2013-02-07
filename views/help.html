@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+{% block title %}Help{% endblock %}
+{% block brand %}
+    <a class="brand" href="/biblesearch">Biblesearch</a>
+{% endblock %}
+{% block navbar %}
+    <li><a href="/biblesearch">Home</a></li>
+    <li><a href="/about" id="about">About</a></li>
+    <li class="active"><a href="/help" id="help">Help</a></li>
+{% endblock %}
+{% block content %}
+    <div class="container-narrow">
+        <h1 class="pagination-centered">Help</h1>
+        <pre>
+            search flags first column prefix (these should come first):
+            ----------------------------------------------------------------
+            ! = not (not in any of the results)
+            + = all (in all the results)
+            | = or  (in at least one result)
+            ^ = exclusive or (only one in any of the results)
+
+            not example: ('in the beginning' !was) results will have the
+                         phrase 'in the beginning' but will not have the word
+                         'was.'
+            all example: ('in the beginning' +was) results may have the
+                         phrase 'in the beginning' but all of them will have
+                         the word 'was.' (note. this will find all verses with
+                         the word 'was' in them if you want it to have the
+                         phrase 'in the beginning' also you have to prefix it
+                         with a '+' aswell)
+            or example: ('in the beginning' |was) results will be all the
+                        verses with the phrase 'in the beginning' and all the
+                        verses with the word 'was.'
+            exclusive or example: ('^in the beginning' '^was') results
+                                  will either have the phrase 'in the
+                                  beginning' or the word 'was', but not both.
+                                  To be effective you must have at least two
+                                  search terms prefixed with '^.'
+
+            search flags second column prefix (these come after the first
+            column flags):
+            -------------------------------------------------------------------
+            ~ = sloppy phrase
+            & = regular expression search.
+
+            sloppy phrase example: ('~in the beginning') results will
+                                   have all the words 'in', 'the', and
+                                   'beginning,' but they may have other words
+                                   between them.
+            regular expression example:
+            ('&\b[iI]n\b\s+\b[tT][Hh][eE]\b\s+\b[bB]eginning\b')
+            results will be all the verses with the phrase 'in the beginning.'
+        </pre>
+    </div>
+{% endblock %}
+

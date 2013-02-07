@@ -1,0 +1,10 @@
+{% extends "dropdown.html" %}
+{% block content %}
+    <form action="/biblesearch/lookup" method="get" id="form-lookup" class="modal-form">
+        <div class="input-prepend input-append">
+            <span class="add-on">Reference</span>
+            <input autofocus class="input-small" id="lookup" value="{{reference}}" name="verse_refs" type="text" data-provide="typeahead"/>
+            <button type="submit" class="btn"><i class="icon-ok"></i></button>
+        </div>
+    </form>
+{% endblock %}

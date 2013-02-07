@@ -1,0 +1,16 @@
+<li class="dropdown">
+    <a class="dropdown-toggle" id="{{id}}" role="button" data-toggle="dropdown" data-target="#" href="{{href}}">
+        {{label}}
+        <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="{{id}}">
+        <li role='menuitem'>
+            <div class="container-fluid">
+                <div class="row-fluid">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+

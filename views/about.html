@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block title %}About{% endblock %}
+{% block brand %}
+    <a class="brand" href="/biblesearch">Biblesearch</a>
+{% endblock %}
+{% block navbar %}
+    <li><a href="/biblesearch">Home</a></li>
+    <li class="active"><a href="/about" id="about">About</a></li>
+    <li><a href="/help" id="help">Help</a></li>
+{% endblock %}
+{% block content %}
+    <div class="container-narrow">
+        <h1 class='pagination-centered'>Bible Search</h1>
+        <p class="lead pagination-centered">
+            This is a web interface for a python Bible searching library.
+            <br/>
+            All the code I wrote is licensed under the GPLv3 license.
+            <br/>
+
+            <pre>
+            Copyright (C) 2013  Josiah Gordon
+
+            The JavaScript code in this page is free software: you can
+            redistribute it and/or modify it under the terms of the GNU
+            General Public License (GNU GPL) as published by the Free Software
+            Foundation, either version 3 of the License, or (at your option)
+            any later version.  The code is distributed WITHOUT ANY WARRANTY;
+            without even the implied warranty of MERCHANTABILITY or FITNESS
+            FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+            As additional permission under GNU GPL version 3 section 7, you
+            may distribute non-source (e.g., minimized or compacted) forms of
+            that code without the copy of the GNU GPL normally required by
+            section 4, provided you include this license notice and a URL
+            through which recipients can access the Corresponding Source.</pre>
+        </p>
+    </div>
+{% endblock %}

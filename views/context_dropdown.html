@@ -1,0 +1,13 @@
+{% extends "dropdown.html" %}
+{% block content %}
+    <form action="/biblesearch/context" method="get" id="form-context" class="modal-form">
+        <fieldset>
+            <div class="input-prepend input-append">
+                <span class="add-on">Context</span>
+                <input autofocus class="input-small" id="context" name="context" value="{{value}}" type="number"/>
+                <button type="submit" name="verses" class="btn"><i class="icon-ok"></i></button>
+                <button type="button" id="paragraph-button" name="paragraph" class="btn">Paragraph</button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

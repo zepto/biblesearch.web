@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block title %}Search{% endblock %}
+{% block head %}
+    {{ super() }}
+    <link href="/assets/css/biblesearch.css" rel="stylesheet"/>
+{% endblock %}
+{% block brand %}
+    <a class="brand" href="/biblesearch">Biblesearch</a>
+{% endblock %}
+{% block navbar %}
+    <li class="active"><a href="/biblesearch">Home</a></li>
+    {{ dropdowns }}
+    <li><a href="/about" id="about">About</a></li>
+    <li><a href="/help" id="help">Help</a></li>
+{% endblock %}
+{% block search %}
+    <form action="/biblesearch/search" class="form-search navbar-search pull-right" method="get" id="form-search">
+        <div class="input-append">
+            <input autofocus id="search" name="search" class="search-query" placeholder="Search Terms" type="text" value="{{search_terms}}"/>
+            <button type="submit" class="btn"><i class="icon-search"></i></button>
+        </div>
+    </form>
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div id="verse_list" class="span2">{{verse_list}}</div>
+            <div id="verses" class="span8">{{verses}}</div>
+            <div id="strongs_morph" class="span2">{{strongs}}</div>
+        </div>
+    </div>
+
+    <!-- <footer class="footer well well-small navbar-fixed-bottom">   -->
+    <!--     <span class="pull-right">&copy; 2013 Josiah Gordon</span> -->
+    <!-- </footer>                                                     -->
+
+    <script src="/assets/js/biblesearch.js"></script>
+{% endblock %}
