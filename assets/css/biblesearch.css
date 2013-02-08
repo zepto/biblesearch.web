@@ -27,6 +27,11 @@
     background-color: #dff0d8;
 }
 
+/* Words of christ */
+.red-quote {
+    /* color: #DE6951; */
+}
+
 /* Divine names should be all caps */
 .divine-name {
     font-variant: small-caps;

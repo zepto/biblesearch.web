@@ -39,7 +39,7 @@ tag_regx = re.compile(r'''
             <(?P<tag>
             [Ss]eg|[Nn]ote|[Ww]|[Mm]ilestone|[Ff]oreign|
             [Tt]itle|trans[cC]hange|divine[nN]ame|
-            scrip[Rr]ef)
+            scrip[Rr]ef|[Qq])
             (?P<attr>[^>]*)(?:(?P<end>/>)|>
             (?P<text>[\w\W]*?)
             </(?P=tag)>)
@@ -183,6 +183,10 @@ def tag_func(match):
         refs = ';'.join(ref_list)
 
         return passage_a % (refs, text)
+    if 'q' == tag:
+        q_span = '<span class="red-quote">%s</span>'
+        match_dict['text'] = tag_regx.sub(tag_func, match_dict['text'])
+        return q_span % match_dict['text']
 
 
 def build_verselist(verse_refs: str) -> str:
