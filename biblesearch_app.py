@@ -695,17 +695,27 @@ def strongs(ext: str=''):
         language = 'Hebrew' if lang.upper() == 'H' else 'Greek'
         lookup = sword_search.Lookup(module_name='StrongsReal%s' % language)
 
+        strongs_num = ('0' if lang == 'H' else '') + num[1:].lstrip('0')
+
         # Get the strongs definition.
-        text = lookup.get_raw_text(num[1:])
+        text = lookup.get_raw_text(strongs_num)
 
-        # Fix strongs headings so their language can be detected by the
-        # javascript.
+        # Fix strongs headings so their language can be detected by
+        # the javascript.
         text_name = 'data-name="%s\\1"' % lang.upper()
-        text = re.sub('name="([^"]+)"', text_name, text)
+        try:
+            text = re.sub('name="([^"]+)"', text_name, text)
+        except Exception as err:
+            print("%s: (text: %s, text_name: %s, num: %s)" % (err, text, text_name, num))
 
-        # Convert hrefs to lookup links, and append the converted text
-        # to the return list.
-        text_list.append(strongs_regx.sub('/biblesearch/strongs?strongs=\\1', text))
+        # Convert hrefs to lookup links, and append the converted
+        # text to the return list.
+        try:
+            text = strongs_regx.sub('/biblesearch/strongs?strongs=\\1', text)
+        except Exception as err:
+            print("%s: (text: %s, num: %s)" % (err, text, num))
+
+        text_list.append(text)
         text_list.append('<br/>')
 
     # Lookup and convert morph tags.
