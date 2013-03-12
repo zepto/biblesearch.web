@@ -8,10 +8,12 @@
     <a class="brand" href="/biblesearch">Biblesearch</a>
 {% endblock %}
 {% block navbar %}
-    <li class="active"><a href="/biblesearch">Home</a></li>
-    {{ dropdowns }}
-    <li><a href="/about" id="about">About</a></li>
-    <li><a href="/help" id="help">Help</a></li>
+    <ul class="nav">
+        <li class="active"><a href="/biblesearch">Home</a></li>
+        {{ dropdowns }}
+        <li><a href="/about" id="about">About</a></li>
+        <li><a href="/help" id="help">Help</a></li>
+    </ul>
 {% endblock %}
 {% block search %}
     <form action="/biblesearch/search" class="form-search navbar-search pull-right" method="get" id="form-search">
