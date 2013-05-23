@@ -231,7 +231,7 @@ function show_devotional(devotional_date) {
   */
 function highlight_strongs() {
     var terms = $('#form-search input[name=search]').val();
-    var terms_match = terms.match(/((?:H|G)\d+)/g);
+    var terms_match = terms.match(/((?:[Hh]|[Gg])\d+)/g);
 
     if (terms_match)
     {
@@ -244,7 +244,7 @@ function highlight_strongs() {
             // found put a span around it to highlight it.
             $(".target-text .word").each(function(w_index, w) {
                 var lemma = $(this).attr('data-lemma');
-                var matches = lemma.match(/((?:H|G)\d+)/g);
+                var matches = lemma.match(/((?:[Hh]|[Gg])\d+)/g);
 
                 if ($.inArray(strong_num, matches) != -1) {
                     $(this).html('<span class="strongs-highlight">' + $(this).html() + '</span>');
