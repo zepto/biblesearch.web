@@ -332,7 +332,7 @@ $(function() {
 
         $('#verses a').each(function(index, verse) {
             if ($(this).hasClass('target-verse'))
-                verse_refs.push($(this).html());
+                verse_refs.push($.trim($(this).html()));
         });
         if (verse_refs)
             show_verses(verse_refs.join());
