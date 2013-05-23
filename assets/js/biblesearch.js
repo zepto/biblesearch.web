@@ -28,6 +28,10 @@ function search(event) {
     * results come back.
     */
 function do_search(terms, min_range, max_range) {
+    // Show a loading message so the user doesn't think its not loading and
+    // clicks again, further slowing it.
+    $('#verses').html('<div class="alert alert-info"><strong>Searching...</strong></div>');
+
     return $.ajax({
         url: '/biblesearch/search.json',
         type: 'GET',
