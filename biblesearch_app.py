@@ -702,9 +702,9 @@ def strongs(ext: str=''):
 
         # Fix strongs headings so their language can be detected by
         # the javascript.
-        text_name = 'data-name="%s\\1"' % lang.upper()
+        text_name = 'data-name="%s%s\\1"' % (lang.upper(), '0' if lang == 'H' else '')
         try:
-            text = re.sub('name="([^"]+)"', text_name, text)
+            text = re.sub('name="0*([^"]+)"', text_name, text)
         except Exception as err:
             print("%s: (text: %s, text_name: %s, num: %s)" % (err, text, text_name, num))
 
