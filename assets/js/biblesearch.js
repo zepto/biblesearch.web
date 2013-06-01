@@ -126,6 +126,25 @@ function get_state(key) {
 }
 
 /**
+  * Get the query string values from the url.
+  */
+function get_query() {
+    var queries = [], query;
+    var url = $(location).attr('href');
+    var query_list = url.slice(url.indexOf('?') + 1).split('&');
+
+
+    $.each(query_list, function(index, item) {
+        query = item.split('=');
+        alert(query);
+        queries.push(query[0]);
+        queries[query[0]] = query[1].split(',');
+    });
+
+    return queries;
+}
+
+/**
   * Attempt to restore the previous session.
   */
 function restore_session() {
@@ -135,7 +154,8 @@ function restore_session() {
     var min_range = get_state('biblesearch.min_range');
     var max_range = get_state('biblesearch.max_range');
     var context = get_state('biblesearch.context');
-    var url = $(location).attr('href');
+
+    var queries = get_query();
 
     if (min_range)
         $('#form-range input[id=min-range]').val(min_range);
@@ -146,14 +166,16 @@ function restore_session() {
     if (context)
         $('#form-context input[id=context]').val(context);
     if (references)
-        $('#form-lookup input[name=verse_refs]').val(references);
-    if (url.lastIndexOf('?') == -1) {
-        // Don't load the session if a query was given in the url.
-        if (verse_list)
-            lookup(verse_list);
-        else if (!localStorage && terms)
-            do_search(terms);
-    }
+        $('#for-lookup input[name=verse_refs]').val(references);
+    if (queries) {
+        if (queries['verse_refs'])
+            verse_list = queries['verse_refs'];
+        if (queries['search'])
+            do_search(queries['search']);
+    if (verse_list)
+        lookup(verse_list);
+    else if (!localStorage && terms)
+        do_search(terms);
 
     // localStorage.clear();
 }
