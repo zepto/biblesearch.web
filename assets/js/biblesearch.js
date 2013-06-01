@@ -136,7 +136,6 @@ function get_query() {
 
     $.each(query_list, function(index, item) {
         query = item.split('=');
-        alert(query);
         queries.push(query[0]);
         queries[query[0]] = query[1].split(',');
     });
@@ -172,6 +171,7 @@ function restore_session() {
             verse_list = queries['verse_refs'];
         if (queries['search'])
             do_search(queries['search']);
+    }
     if (verse_list)
         lookup(verse_list);
     else if (!localStorage && terms)
