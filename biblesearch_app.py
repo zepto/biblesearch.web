@@ -100,6 +100,8 @@ bible_app.error_handler = errors.handler
 
 project_root = dirname(__file__)
 
+bible_search = sword_search.Search(multiword=True)
+
 
 def tag_func(match):
     """ Modify the verse text to italicize, uppercase and extract headings.
@@ -373,7 +375,6 @@ def do_search(search_terms: str='', min_range: str="Genesis",
     terms_list = [''.join(i) for i in search_regx.findall(search_terms)]
 
     # Get a set of verse references that match the search criteria.
-    bible_search = sword_search.Search(multiword=True)
     verse_set = bible_search.mixed_search(terms_list, range_str=range_str)
 
     # Build the return list of dictionaries.

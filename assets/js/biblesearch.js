@@ -135,6 +135,7 @@ function restore_session() {
     var min_range = get_state('biblesearch.min_range');
     var max_range = get_state('biblesearch.max_range');
     var context = get_state('biblesearch.context');
+    var url = $(location).attr('href');
 
     if (min_range)
         $('#form-range input[id=min-range]').val(min_range);
@@ -146,10 +147,13 @@ function restore_session() {
         $('#form-context input[id=context]').val(context);
     if (references)
         $('#form-lookup input[name=verse_refs]').val(references);
-    if (verse_list)
-        lookup(verse_list);
-    else if (!localStorage && terms)
-        do_search(terms);
+    if (url.lastIndexOf('?') == -1) {
+        // Don't load the session if a query was given in the url.
+        if (verse_list)
+            lookup(verse_list);
+        else if (!localStorage && terms)
+            do_search(terms);
+    }
 
     // localStorage.clear();
 }
