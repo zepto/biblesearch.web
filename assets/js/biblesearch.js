@@ -131,14 +131,15 @@ function get_state(key) {
 function get_query() {
     var queries = [], query;
     var url = $(location).attr('href');
-    var query_list = url.slice(url.indexOf('?') + 1).split('&');
+    if (url.indexOf('?') != -1) {
+        var query_list = url.slice(url.indexOf('?') + 1).split('&');
 
-
-    $.each(query_list, function(index, item) {
-        query = item.split('=');
-        queries.push(query[0]);
-        queries[query[0]] = query[1].split(',');
-    });
+        $.each(query_list, function(index, item) {
+            query = item.split('=');
+            queries.push(query[0]);
+            queries[query[0]] = query[1].split(',');
+        });
+    }
 
     return queries;
 }
@@ -166,12 +167,15 @@ function restore_session() {
         $('#form-context input[id=context]').val(context);
     if (references)
         $('#for-lookup input[name=verse_refs]').val(references);
-    if (queries) {
-        if (queries['verse_refs'])
-            verse_list = queries['verse_refs'];
-        if (queries['search'])
-            do_search(queries['search']);
-    }
+    // if (queries) {
+    //     if (queries['verse_refs'])
+    //     {
+    //         verse_list = queries['verse_refs'];
+    //         lookup(verse_list);
+    //     }
+    //     // if (queries['search'])
+    //     //     do_search(queries['search']);
+    // }
     if (verse_list)
         lookup(verse_list);
     else if (!localStorage && terms)
@@ -427,8 +431,10 @@ $(function() {
         $('#verses').html(request.responseText);
     });
 
-    highlight_strongs();
-    restore_session();
+    if (!$.trim(get_query())) {
+        highlight_strongs();
+        restore_session();
+    }
 });
 
 /**
