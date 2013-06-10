@@ -317,6 +317,11 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
     for ref, verse_text in sword_search.VerseTextIter(iter(verse_list),
                                                       strongs=True, morph=True,
                                                       render='raw'):
+
+        # Setup the verse text for highlighting and put the headings,
+        # notes, and paragraph markers in.
+        verse_text = tag_regx.sub(tag_func, verse_text)
+
         # Highlight only in the verses found during the search, not in
         # any of the context verses.
         if ref in verse_refs:
@@ -324,15 +329,11 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
             # the search query in the output text.
             reel = build_highlight_regx(terms_list, False,
                                         color_tag='</?span[^>]*>',
-                                        extra_tag='</span>')
+                                        extra_tag='</span>') #,
             # Apply the highlight regex to highlight the verse text.
             verse_text = highlight_search_terms(verse_text, reel,
                                                 highlight_text,
                                                 color_tag='</?span[^>]*>')
-
-        # Setup the verse text for highlighting and put the headings,
-        # notes, and paragraph markers in.
-        verse_text = tag_regx.sub(tag_func, verse_text)
 
         if results_list:
             last_ref = results_list[-1]['verseref']
