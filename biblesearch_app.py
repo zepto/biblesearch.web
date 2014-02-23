@@ -328,12 +328,12 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
             # Build a regular expression that can be used to highlight
             # the search query in the output text.
             reel = build_highlight_regx(terms_list, False,
-                                        color_tag='\\b', #</?span[^>]*>',
+                                        color_tag='</?span[^>]*>',
                                         extra_tag='</span>')
             # Apply the highlight regex to highlight the verse text.
             verse_text = highlight_search_terms(verse_text, reel,
                                                 highlight_text,
-                                                color_tag='</?span[^>]*>')
+                                                color_tag='\\b') #</?span[^>]*>')
 
         if results_list:
             last_ref = results_list[-1]['verseref']
