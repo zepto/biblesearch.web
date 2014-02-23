@@ -329,7 +329,7 @@ def lookup_verses(verse_refs, search_terms='', context=0):
             # Build a regular expression that can be used to highlight
             # the search query in the output text.
             reel = build_highlight_regx(terms_list, False,
-                                        color_tag='</?span[^>]*>',
+                                        color_tag='\\b', #</?span[^>]*>',
                                         extra_tag='</span>')
             # Apply the highlight regex to highlight the verse text.
             verse_text = highlight_search_terms(verse_text, reel,
@@ -783,6 +783,7 @@ def index(location='biblesearch'):
 
 if __name__ == "__main__":
     # Run under local testing server
+    from socket import gethostname
     debug(True)
-    run(bible_app, host="192.168.1.3", port=8081, reloader=True,
+    run(bible_app, host=gethostname(), port=8081, reloader=True,
         server='tornado')
