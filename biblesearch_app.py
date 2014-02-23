@@ -783,7 +783,7 @@ def index(location='biblesearch'):
 
 if __name__ == "__main__":
     # Run under local testing server
-    from socket import gethostname
+    from socket import gethostname, gethostbyname
     debug(True)
-    run(bible_app, host=gethostname(), port=8080, reloader=True,
+    run(bible_app, host=gethostbyname(gethostname()), port=8080, reloader=True,
         server='tornado')
