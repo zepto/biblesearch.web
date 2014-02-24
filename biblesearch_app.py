@@ -333,7 +333,7 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
             # Apply the highlight regex to highlight the verse text.
             verse_text = highlight_search_terms(verse_text, reel,
                                                 highlight_text,
-                                                color_tag='\\b') #</?span[^>]*>')
+                                                color_tag='\\b')
 
         if results_list:
             last_ref = results_list[-1]['verseref']
@@ -704,11 +704,13 @@ def strongs(ext: str=''):
 
         # Fix strongs headings so their language can be detected by
         # the javascript.
-        text_name = 'data-name="%s%s\\1"' % (lang.upper(), '0' if lang == 'H' else '')
+        text_name = 'data-name="%s%s\\1"' % (lang.upper(), '0' if lang == 'H'
+                                             else '')
         try:
             text = re.sub('name="0*([^"]+)"', text_name, text)
         except Exception as err:
-            print("%s: (text: %s, text_name: %s, num: %s)" % (err, text, text_name, num))
+            print("%s: (text: %s, text_name: %s, num: %s)" % (err, text,
+                                                              text_name, num))
 
         # Convert hrefs to lookup links, and append the converted
         # text to the return list.
