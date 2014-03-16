@@ -28,7 +28,7 @@ import json
 import re
 
 import sword_search
-from sword_search import build_highlight_regx, highlight_search_terms
+from sword_search import build_highlight_regx #, highlight_search_terms
 import errors
 
 
@@ -189,6 +189,50 @@ def tag_func(match):
         q_span = '<span class="red-quote">%s</span>'
         match_dict['text'] = tag_regx.sub(tag_func, match_dict['text'])
         return q_span % match_dict['text']
+
+
+def highlight_search_terms(verse_text, regx_list, highlight_text,
+                           color_tag='\033\[[\d+;]*m', *args):
+    """ Highlight search terms in the verse text.
+
+    """
+
+    def highlight_group(match):
+        """ Highlight each word/Strong's Number/Morphological Tag in the
+        match.
+
+        """
+
+        match_text = match.group()
+        for word in set(match.groups()):
+            if word: # and word != match_text:
+                if word.lower() == 'strong' and word == match_text:
+                    continue
+                try:
+                    match_text = re.sub('''
+                            (
+                            (?:{0}|\\b)+
+                            {1}
+                            (?:{0}|\\b)+
+                            )
+                            '''.format(color_tag, re.escape(word)),
+                            highlight_text, match_text, flags=re.X)
+                except Exception as err:
+                    print("Error with highlighting word %s: %s" % (word, err))
+            #match_text = match_text.replace(word, '\033[7m%s\033[m' % word)
+        # print(match_text)
+        return match_text
+
+        # Strip any previous colors.
+        # match_text = strip_color_regx.sub('', match.group())
+        # return word_regx.sub(highlight_text, match_text)
+
+    verse_text = verse_text.strip()
+    # Apply each highlighting regular expression to the text.
+    for regx in regx_list:
+        verse_text = regx.sub(highlight_group, verse_text)
+
+    return verse_text
 
 
 def build_verselist(verse_refs: str) -> str:
