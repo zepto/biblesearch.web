@@ -482,8 +482,9 @@ $(function() {
     });
 
     // Append the strongs number of the clicked word/words to the search input.
-    $(document).on('click', '.word', function(event) {
-        if (!$('html').hasClass('touch')) {
+    $(document).on('click touch', '.word', function(event) {
+        // if (!$('html').hasClass('touch')) {
+        if (event.type == 'click') {
             // If not on a touch screen append the strongs number to the search
             // input.
             var lemma = $(this).attr("data-lemma");
