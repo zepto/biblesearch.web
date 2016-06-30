@@ -47,7 +47,7 @@ function do_search(terms, min_range, max_range) {
         // response.references is supposed to be a list of references, if it is
         // then lookup and display all of them.
         if (response.references)
-            lookup(response.references.join());
+            lookup(response.references.join(), true);
     })
     .fail(function(request, textstatus, message) {
         $(this).html(request.responseText);
@@ -189,9 +189,12 @@ function restore_session() {
   * Send a request to the server for the text of a verse or list of verses, and
   * display the response in the #verses div.
   */
-function show_verses(references) {
+function show_verses(references, issearch) {
     // Send the search terms so the server can highlight them in the text.
-    var terms = $('#form-search input[name=search]').val();
+    if (issearch)
+        var terms = $('#form-search input[name=search]').val();
+    else
+        var terms = '';
     var context = $('#form-context input[id=context]').val();
 
     save_state({'biblesearch.context': context});
@@ -316,11 +319,11 @@ function get_paragraph(verse_ref) {
 /**
   * Ask the server for the html for verse list list of references.
   */
-function lookup(references) {
+function lookup(references, issearch) {
     save_state({'biblesearch.verse_list': references});
 
     // Show the verses.
-    show_verses(references);
+    show_verses(references, issearch);
 
     return $.ajax({
         url: '/biblesearch/references.json',
@@ -365,7 +368,7 @@ $(function() {
                 verse_refs.push($.trim($(this).html()));
         });
         if (verse_refs)
-            show_verses(verse_refs.join());
+            show_verses(verse_refs.join(), true);
 
         // Hide the dropdown.
         $(".dropdown.open").removeClass('open');
@@ -474,28 +477,29 @@ $(function() {
     var has_touch = $('html').hasClass('touch');
 
     // Display the tag definitions of the word/words under the cursor.
-    $(document).on('mouseenter', '.word', function() {
+    // $(document).on('mouseenter', '.word', function() {
+    //     // Get the tag attributes.
+    //     var strongs = $(this).attr("data-lemma");
+    //     var morph = $(this).attr("data-morph");
+    //     show_def(strongs, morph);
+    // });
+
+    // Append the strongs number of the clicked word/words to the search input.
+    // $(document).on('click touch', '.word', function(event) {
+    $(document).on('click', '.word', function(event) {
+        // if (!$('html').hasClass('touch')) {
+        // if (event.type == 'click') {
+        //     // If not on a touch screen append the strongs number to the search
+        //     // input.
+        //     var lemma = $(this).attr("data-lemma");
+        //     append_search(lemma);
+        // } else {
+        // On a touch screen show the definition of the strongs and morph.
         // Get the tag attributes.
         var strongs = $(this).attr("data-lemma");
         var morph = $(this).attr("data-morph");
         show_def(strongs, morph);
-    });
-
-    // Append the strongs number of the clicked word/words to the search input.
-    $(document).on('click touch', '.word', function(event) {
-        // if (!$('html').hasClass('touch')) {
-        if (event.type == 'click') {
-            // If not on a touch screen append the strongs number to the search
-            // input.
-            var lemma = $(this).attr("data-lemma");
-            append_search(lemma);
-        } else {
-            // On a touch screen show the definition of the strongs and morph.
-            // Get the tag attributes.
-            var strongs = $(this).attr("data-lemma");
-            var morph = $(this).attr("data-morph");
-            show_def(strongs, morph);
-        }
+        // }
     });
 
     // Display all the verses in the list when the verse count link is clicked.
@@ -505,7 +509,7 @@ $(function() {
         $('#verse_list #verse-refs .verseref').each(function(index, ref) {
             verse_list.push($(this).text());
         });
-        show_verses(verse_list.join());
+        show_verses(verse_list.join(), true);
     });
 
     // Display each verse when it's reference link is clicked.
@@ -517,7 +521,7 @@ $(function() {
         } else {
             // One reference was clicked so it is probably already in the verse
             // list.
-            show_verses($(this).text());
+            show_verses($(this).text(), true);
         }
     });
 

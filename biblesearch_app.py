@@ -353,6 +353,7 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
 
     # The results list.
     results_list = []
+    last_ref = ''
 
     # Highlight colors.
     highlight_text = '<span class="query-highlight">\\1</span>'
@@ -361,6 +362,7 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
     for ref, verse_text in sword_search.VerseTextIter(iter(verse_list),
                                                       strongs=True, morph=True,
                                                       render='raw'):
+
         # Highlight only in the verses found during the search, not in
         # any of the context verses.
         if ref in verse_refs:
@@ -378,8 +380,8 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
         # notes, and paragraph markers in.
         verse_text = tag_regx.sub(tag_func, verse_text)
 
-        if results_list:
-            last_ref = results_list[-1]['verseref']
+        if results_list and last_ref:
+            # last_ref = results_list[-1]['verseref']
             last_book, _ = last_ref.rsplit(' ', 1)
             cur_book, _ = ref.rsplit(' ', 1)
 
@@ -391,10 +393,12 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
                     "versetext": '',
                 })
 
+        last_ref = ref
+
         # Build a list of the results.
         results_list.append({
             "highlight": ref in verse_refs,
-            "verseref": ref,
+            "verseref": ref if search_terms else '',
             "versetext": verse_text,
         })
 
