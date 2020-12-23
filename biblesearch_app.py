@@ -28,7 +28,7 @@ import json
 import re
 
 import sword_search
-from sword_search import build_highlight_regx #, highlight_search_terms
+from sword_search import build_highlight_regx, highlight_search_terms
 import errors
 
 
@@ -191,7 +191,7 @@ def tag_func(match):
         return q_span % match_dict['text']
 
 
-def highlight_search_terms(verse_text, regx_list, highlight_text,
+def old_highlight_search_terms(verse_text, regx_list, highlight_text,
                            color_tag='\033\[[\d+;]*m', *args):
     """ Highlight search terms in the verse text.
 
@@ -205,14 +205,17 @@ def highlight_search_terms(verse_text, regx_list, highlight_text,
 
         match_text = match.group()
         for word in set(match.groups()):
-            if word: # and word != match_text:
-                if word.lower() == 'strong' and word == match_text:
-                    continue
+            # print(f"{word=}, {match_text=}")
+            # if word != match_text:
+            #     print(f"{word=}, {match_text=}")
+            if word:
+                # if word.lower() == 'strong' and word == match_text:
+                #     continue
                 try:
                     match_text = re.sub('''
                             (
                             (?:{0}|\\b)+
-                            {1}
+                            {1}(?!sMarkup|Morph|:(TH|H|G)[0-9]+)
                             (?:{0}|\\b)+
                             )
                             '''.format(color_tag, re.escape(word)),
@@ -220,7 +223,7 @@ def highlight_search_terms(verse_text, regx_list, highlight_text,
                 except Exception as err:
                     print("Error with highlighting word %s: %s" % (word, err))
             #match_text = match_text.replace(word, '\033[7m%s\033[m' % word)
-        # print(match_text)
+        # print(f"returning: {match_text}")
         return match_text
 
         # Strip any previous colors.
@@ -230,7 +233,9 @@ def highlight_search_terms(verse_text, regx_list, highlight_text,
     verse_text = verse_text.strip()
     # Apply each highlighting regular expression to the text.
     for regx in regx_list:
+        # print(f"regx={regx}: verse_text={verse_text}")
         verse_text = regx.sub(highlight_group, verse_text)
+        # print(f"got {verse_text}")
 
     return verse_text
 
@@ -368,13 +373,24 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
         if ref in verse_refs:
             # Build a regular expression that can be used to highlight
             # the search query in the output text.
+            # print(terms_list)
             reel = build_highlight_regx(terms_list, False,
-                                        color_tag='</?w[^>]*>',
-                                        extra_tag='</w>')
+                                        color_tag='</?span[^>]*>',
+                                        extra_tag='</span>')
+
+            # Change all tags that contain the word strong to stronk so
+            # the highlighting will not break the html.
+            verse_text = re.sub(r'(stron)g(:|Morph:|sMarkup)', '\\1k\\2',
+                                verse_text, flags=re.IGNORECASE)
+
             # Apply the highlight regex to highlight the verse text.
             verse_text = highlight_search_terms(verse_text, reel,
                                                 highlight_text,
-                                                color_tag='\\b')
+                                                color_tag='</?span[^>]*>')
+
+            # Change stronk back to strong.
+            verse_text = re.sub(r'(stron)k(:|Morph:|sMarkup)', '\\1g\\2',
+                                verse_text, flags=re.IGNORECASE)
 
         # Setup the verse text for highlighting and put the headings,
         # notes, and paragraph markers in.
@@ -833,6 +849,5 @@ def index(location='biblesearch'):
 if __name__ == "__main__":
     # Run under local testing server
     from socket import gethostname, gethostbyname
-    debug(True)
-    run(bible_app, host=gethostbyname(gethostname()), port=8080, reloader=True,
-        server='tornado')
+    bible_app.run(host=gethostbyname(gethostname()), port=8081, reloader=True,
+                  server='tornado', debug=True)

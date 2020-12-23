@@ -995,8 +995,8 @@ def highlight_search_terms(verse_text, regx_list, highlight_text,
         match_text = match.group()
         for word in set(match.groups()):
             if word: # and word != match_text:
-                if word.lower() == 'strong' and word == match_text:
-                    continue
+                # if word.lower() == 'strong' and word == match_text:
+                #     continue
                 info_print(word, tag=20)
                 try:
                     match_text = re.sub('''
@@ -1027,7 +1027,7 @@ def highlight_search_terms(verse_text, regx_list, highlight_text,
 
 
 def build_highlight_regx(search_list, case_sensitive, sloppy=False,
-                         color_tag='\033\[[\d+;]*m', extra_tag='\033'):
+                         color_tag='\033\[[\\\\d+;]*m', extra_tag='\033'):
     """ Build a regular expression and highlight string to colorize the
     items in search_list as they appear in a verse.
 
