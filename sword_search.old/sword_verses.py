@@ -44,7 +44,13 @@ def book_gen():
     for testament in [1, 2]:
         for book in range(1, verse_key.bookCount(testament) + 1):
             yield(verse_key.bookName(testament, book))
-book_list = list(book_gen())
+# book_list = list(book_gen())
+try:
+    book_list = []
+    for book in book_gen():
+        book_list.append(book)
+except:
+    pass
 
 
 # Key function used to sort a list of verse references.
@@ -899,8 +905,11 @@ class IndexBible(object):
         """
 
         info_print("Indexing %s could take a while..." % self._module_name)
-        for book in self._book_gen():
-            self._index_book(book)
+        try:
+            for book in self._book_gen():
+                self._index_book(book)
+        except:
+            pass
         self._module_dict['_words_'].extend(self._words_set)
         self._module_dict['_strongs_'].extend(self._strongs_set)
         self._module_dict['_morph_'].extend(self._morph_set)
