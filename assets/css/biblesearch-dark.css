@@ -1,0 +1,87 @@
+/* Three view columns on the pate */
+#verses, #verse_list, #strongs_morph {
+    /* position: relative; */
+    /* padding: 1px;       */
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+/* Result verse reference */
+.target-verse {
+    font-weight: bold;
+}
+
+/* Strongs group highlight */
+.strongs-highlight {
+    color: #111111;
+    background-color: #9d9f00;
+}
+
+/* Search query highlight */
+.query-highlight {
+    color: #111111;
+    background-color: #bcda55;
+}
+
+/* Hover color for word groups
+ * (words are grouped by strongs number) */
+.word:hover {
+    /* color: #333333; */
+    /* background-color: #577053; */
+    background-color: rgba(188, 218, 85, .15);
+}
+
+/* Words of christ */
+.red-quote {
+    /* color: #DE6951; */
+}
+
+/* Divine names should be all caps */
+.divine-name {
+    font-variant: small-caps;
+}
+
+/* Added text is italicized */
+.added-text {
+    font-style: italic;
+}
+
+/* Verse titles will be bold */
+.title-text {
+    font-weight: bold;
+}
+
+/* Don't treat the verse count link as a normal link */
+.verse-count, .verse-count:hover {
+    text-shadow: inherit;
+    color: inherit;
+}
+
+/* Hide notes initially */
+note {
+    display: none;
+}
+
+/********************
+* Webkit scrollbars *
+********************/
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: rgba( 151, 148, 148,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba( 151, 148, 148,0.4); 
+}

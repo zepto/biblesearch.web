@@ -25,6 +25,7 @@ def webkit_window(url: str = 'http://127.0.1.1:8081', width: int = 1280,
 
     from gi.repository import WebKit2
     from gi.repository import Gtk
+    import os
 
     proc = server_proc()
     proc.start()
@@ -40,7 +41,7 @@ def webkit_window(url: str = 'http://127.0.1.1:8081', width: int = 1280,
     scroll.add(webview)
 
     window = Gtk.Window()
-    window.set_default_icon_from_file('assets/ico/biblesearch-48x48.svg')
+    window.set_default_icon_from_file(f'{os.path.dirname(__file__)}/assets/ico/biblesearch-48x48.svg')
     window.set_size_request(width, height)
     window.set_title('Biblesearch')
     window.connect_after('destroy', Gtk.main_quit)
