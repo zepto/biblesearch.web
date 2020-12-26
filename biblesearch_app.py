@@ -330,6 +330,21 @@ def get_paragraph(verse_ref: str) -> str:
     return '%s-%s' % (start_ref, end_ref)
 
 
+def get_chapter(verse_ref: str) -> str:
+    """ Finds and returns the chapter that verse_ref belongs to.
+
+    """
+
+    verse = sword_search.Verse(verse_ref)
+
+    book = verse.get_book_name()
+    start_ref = f'{book} {verse._chapter}:1'
+    end_ref = f'{book} {verse._chapter}:{verse.get_max_verse()._verse}'
+
+    # Make it a range.
+    return f'{start_ref}-{end_ref}'
+
+
 def lookup_verses(verse_refs, search_terms: str='', context=0):
     """ Looks up the verses in verse_refs, highlights the search_terms, and
     returns a list of verses adding context verses on either side of each.
@@ -636,6 +651,30 @@ def references(ext: str=''):
 
     if ext == '.json':
         return {'html': build_verselist(verse_refs)}
+    else:
+        return build_page(make_valid(verse_refs))
+
+
+@bible_app.route("/biblesearch/chapter")
+@bible_app.route("/biblesearch/chapter<ext>")
+def chapter(ext: str=''):
+    """ Attempts to find the chapter.
+
+    """
+
+    verse_refs = request.query.get('start', '').strip()
+    verse_refs = ';'.join(i.strip() for i in verse_refs.split(','))
+
+    if not verse_refs:
+        return {'html': ''}
+
+    verse_list = make_valid(verse_refs)
+
+    # Build a chapter for each verse in the list.
+    verse_refs = [get_chapter(i) for i in verse_list]
+
+    if ext == '.json':
+        return {'references': verse_refs}
     else:
         return build_page(make_valid(verse_refs))
 

@@ -288,6 +288,35 @@ function highlight_strongs() {
 }
 
 /**
+  * Send a request for the context chapter of the given verse reference, and
+  * put the results on the page.
+  */
+function get_chapter(verse_ref) {
+
+    return $.ajax({
+        url: '/biblesearch/chapter.json',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            start: verse_ref,
+        },
+        context: $('#verse_list')
+    })
+    .done(function(response) {
+        if (response.references)
+            lookup(response.references.join());
+        // Display the list of references.
+        // $(this).html(response.html);
+        //
+        // // Open all the results.
+        // show_verses($('#verse_list #verse-refs').text());
+    })
+    .fail(function(request, textstatus, message) {
+        $(this).html(request.responseText);
+    });
+}
+
+/**
   * Send a request for the context paragraph of the given verse reference, and
   * put the results on the page.
   */
@@ -557,6 +586,22 @@ $(function() {
                 return 'icon-plus';
             }
         });
+    });
+
+    $(document).on('click', '#chapter-button', function(event) {
+        // Get the chapter context for each target-verse.
+        // Build a list of all target verses.
+        var verse_refs = [];
+        $('#verses a').each(function(index, verse) {
+            if ($(this).hasClass('target-verse'))
+                verse_refs.push($(this).html());
+        });
+        // Join the array and get the chapter context.
+        if (verse_refs)
+            get_chapter(verse_refs.join());
+
+        // Hide the dropdown.
+        $(".dropdown.open").removeClass('open');
     });
 
     $(document).on('click', '#paragraph-button', function(event) {
