@@ -355,7 +355,8 @@ def lookup_verses(verse_refs, search_terms: str='', context=0):
     verse_refs = sword_search.parse_verse_range(verse_refs)
 
     # Add the context.
-    verse_list = sword_search.add_context(verse_refs, context)
+    chapter = False if context >= 0 else True
+    verse_list = sword_search.add_context(verse_refs, context, chapter)
 
     # Get a sorted list of the verse set, because it is faster to lookup
     # verses from a sorted list than from a randomized one.
