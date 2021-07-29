@@ -4,35 +4,43 @@ gi_require_version('WebKit2', '4.0')
 
 
 def server_proc():
-    """ Create a process for the webserver and return the process.
-
-    """
-
-    from socket import gethostname, gethostbyname
+    """Create a process for the webserver and return the process."""
     from multiprocessing import Process
+    from socket import gethostbyname, gethostname
 
     import biblesearch_app
 
     return Process(target=biblesearch_app.bible_app.run,
-                   kwargs={"host":gethostbyname(gethostname()), "port":8081,
-                           "server":"tornado"})
+                   kwargs={"host": gethostbyname(gethostname()), "port": 8081,
+                           "server": "tornado"})
+
 
 def webkit_window(url: str = 'http://127.0.1.1:8081', width: int = 1280,
                   height: int = 720):
-    """ Open the biblesearch webpage in a simple webkit window.
-
-    """
-
-    from gi.repository import WebKit2
-    from gi.repository import Gtk
+    """Open the biblesearch webpage in a simple webkit window."""
     import os
+    import requests
+    from gi.repository import GLib, Gtk
+    from gi.repository import WebKit2
 
     proc = server_proc()
     proc.start()
 
+    # Wait for the server to start before loading the page.
+    while True:
+        try:
+            _ = requests.get(url)
+        except requests.exceptions.ConnectionError:
+            continue
+        else:
+            break
+
+    GLib.set_prgname('org.biblesearch.web')
     webview = WebKit2.WebView()
     settings = webview.get_settings()
-    settings.set_property('user-agent', '''Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36''')
+    settings.set_property('user-agent', "Mozilla/5.0 (X11; Linux x86_64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/47.0.2526.106 Safari/537.36")
     webview.load_uri(url)
 
     scroll = Gtk.ScrolledWindow()
@@ -41,7 +49,8 @@ def webkit_window(url: str = 'http://127.0.1.1:8081', width: int = 1280,
     scroll.add(webview)
 
     window = Gtk.Window()
-    window.set_default_icon_from_file(f'{os.path.dirname(__file__)}/assets/ico/biblesearch-48x48.svg')
+    window.set_default_icon_from_file(f"{os.path.dirname(__file__)}"
+                                      f"/assets/ico/biblesearch-48x48.svg")
     window.set_size_request(width, height)
     window.set_title('Biblesearch')
     window.connect_after('destroy', Gtk.main_quit)
@@ -52,6 +61,7 @@ def webkit_window(url: str = 'http://127.0.1.1:8081', width: int = 1280,
 
     proc.terminate()
     proc.join()
+
 
 if __name__ == "__main__":
     webkit_window()
